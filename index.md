@@ -1,9 +1,9 @@
 # Morrow Privacy Policy
 
-Effective date: 2026-08-15
+Effective date: 2026-08-24
 
-Morrow is a personal reading record app. This policy describes how Morrow
-handles user data, including the optional Google Drive backup.
+Morrow is a personal reading record app. This policy describes how the Android
+app handles user data.
 
 ## Developer and contact
 
@@ -15,7 +15,7 @@ handles user data, including the optional Google Drive backup.
 
 Morrow lets you create private reading records. A record may include:
 
-- text you enter, such as a quote, page, or memo;
+- a short memo you enter about what you read;
 - photos you attach from the camera or photo library;
 - book information you select from book search results;
 - local metadata needed to show, edit, sort, or delete your records.
@@ -24,7 +24,11 @@ Morrow lets you create private reading records. A record may include:
 
 Morrow stores reading records on your device. Attached photos are copied into
 app-owned local storage, and record metadata is stored in the app's local
-database.
+database. The device remains the working copy and source for editing records.
+
+You may optionally connect Google Drive for recovery backup as described below.
+Morrow does not provide a Morrow account, multi-device sync, public profiles, or
+social sharing in the production app.
 
 ## Camera and photo access
 
@@ -45,66 +49,74 @@ query to an external book-search provider.
 
 Book search is used only to help you connect a book to a reading record.
 
-## Google Drive backup
+## Book recommendation
 
-Morrow offers an optional backup that you can turn on from Settings. It is off
-until you choose to connect a Google account.
+When you open the discovery tab, Morrow sends the memo text from your recent
+reading records to Morrow's recommendation API so it can rank books that relate
+to what you wrote. The API forwards that text to an embedding provider to
+compute the ranking.
 
-- When you connect a Google account, Morrow uploads versioned snapshots of your
-  reading records and attached photos to an app-private folder on your own
-  Google Drive. The folder uses Google's drive.appdata scope: only Morrow can
-  read or write it, it is not visible to other apps, and Moon Studio cannot
-  read it.
-- Backups run automatically after you record something, and you can also run
-  one manually from Settings. Records and photos are never uploaded to Moon
-  Studio's servers.
-- If you reinstall the app or move to a new device, you can restore your
-  records and photos from the Drive backup. Restoring onto a device that
-  already has records is never automatic: the app asks you to choose between
-  replacing the device's records with the backup and keeping them, and shows
-  how many records and photos each choice affects.
-- You can disconnect Google Drive from Settings at any time. Existing Drive
-  backups remain stored in your Drive until you delete them. You can
-  permanently delete every Morrow backup from your Drive in Settings.
+Your memo text is used only to produce that ranking. It is not stored on
+Morrow's servers, and attached photos are never sent.
 
 ## Accounts, backup, and sync
 
-Morrow has no account of its own. The only third-party connection is the
-optional Google Drive backup described above.
+Morrow does not require or create a Morrow account. If you choose to connect
+Google Drive, Morrow requests the limited `drive.appdata` permission and writes
+an opaque recovery archive to your own hidden Google Drive app data folder. The
+archive can contain memo text, page context, linked-book information, and the
+app-owned copies of photos attached to your records.
 
-Morrow does not offer multi-device sync, public profiles, social sharing,
-advertising, or analytics tracking. If Morrow later adds accounts, sync, paid
-features, sharing, analytics, or other server-backed features, this policy
-will be updated before those features are released.
+After you connect Drive, Morrow may update the backup automatically when your
+local archive changes. Morrow reads back its own archive to verify uploads and
+may download it to restore records. It keeps the newest two fully verified
+archive copies for recovery safety. These files are not sent to or stored on
+Morrow's servers.
+
+Settings lets you disconnect the Drive session without deleting the remote
+backup, or permanently delete recognized Morrow backup files. Permanent backup
+deletion also disconnects Drive authorization so automatic backup cannot
+immediately recreate the deleted files. Morrow may show the selected Google
+account email or identifier in Settings and use the account identifier to
+revoke access; it does not send that account information to Morrow's servers.
+
+Drive backup is recovery, not real-time or multi-device sync. Google manages
+encryption in transit and at rest. Morrow does not add application-layer
+end-to-end encryption or a separate backup passphrase.
 
 ## Sharing and sale of data
 
 Morrow does not sell personal data.
 
-Reading records and attached photos are stored on your device and, only when
-you enable backup, copied to an app-private folder in your own Google Drive.
-They are never uploaded to Moon Studio's servers. Book-search queries are sent
-over the network only to provide book-search results.
+Your reading records and attached photos are not uploaded to Morrow's servers
+for storage. If you enable Drive backup, they are uploaded only to your own
+Google Drive app data folder under Google's terms and privacy policy.
+Book-search queries and memo text used by Discover are sent over the network
+only to return search results or a book ranking as described above.
 
 ## Retention and deletion
 
-You can delete individual reading records in the app. When a record is
-deleted, Morrow removes the local record and attempts to remove the app-owned
-local photo files attached to that record. If Drive backup is on, the next
-backup reflects the deletion.
+You can delete individual reading records in the app. When a record is deleted,
+Morrow removes the local record and attempts to remove the app-owned local photo
+files attached to that record.
 
-You can permanently delete the Drive backups from Settings; this also
-disconnects Google Drive.
+Deleting the app or clearing its data may remove local records and attached
+photos from the device. If you previously enabled Drive backup and did not
+permanently delete it, Morrow may be able to restore a verified backup after you
+reconnect the same Google account. Morrow does not guarantee recovery from an
+incomplete, corrupt, deleted, or inaccessible provider archive.
 
-If you delete the app or clear its data without Drive backup, local records
-and photos cannot be recovered.
+Deleting one local record is reflected in a later successful backup rather
+than deleting an individual object from Drive immediately. You can permanently
+delete every recognized Morrow backup copy from Settings; Morrow confirms their
+absence before clearing its local backup state.
 
 ## Security
 
-Morrow keeps reading records and attached photos in app-owned storage on your
-device. Drive backup transfers are encrypted in transit and stored in your
-Google Drive account. Network requests, such as book search and Drive access,
-are sent over HTTPS in production.
+Morrow keeps its working records and attached photos in app-owned storage on
+your device. Production network requests use HTTPS. Google Drive backup uses
+Google-managed encryption in transit and at rest but is not end-to-end
+encrypted by Morrow.
 
 ## Children
 
@@ -113,4 +125,6 @@ children.
 
 ## Changes to this policy
 
-This policy may be updated when Morrow's behavior changes.
+This policy may be updated when Morrow's behavior changes, especially if a
+Morrow account, sync, public sharing, analytics, or other server-backed
+features are added.
